@@ -3,7 +3,7 @@
 Authenticates by fetching an URL and printing a cookie header using the Set-Cookie header from the response.
 
 ```
-wurl -H $(wurl-auth https://httpbin.org/cookies/set\?foo=bar) -I wss://echo.websocket.org
+wurl -H $(wurl-auth https://httpbin.org/cookies/set\?foo=bar) wss://echo.websocket.org
 ```
 
 ## Improvments
