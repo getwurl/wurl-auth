@@ -9,9 +9,9 @@ args:
         number_of_values: 1
         multiple: true
     - head:
-        short: I
-        long: head
-        help: Prints HTTP headers
+        short: i
+        long: include
+        help: Include the HTTP headers in the output
     - method:
         short: X
         long: method

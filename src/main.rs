@@ -6,6 +6,7 @@ extern crate hyper_tls;
 extern crate tokio_core;
 
 use std::process::exit;
+use std::io::{Read, stdin};
 use hyper::{Client, Method, Request, Uri};
 use hyper::client::Response;
 use hyper::header::SetCookie;
@@ -20,9 +21,21 @@ fn main() {
     let url = value_t_or_exit!(matches, "url", Uri);
     let headers = values_t!(matches, "headers", String).unwrap_or(Vec::new());
     let method = value_t!(matches, "method", Method).unwrap_or(Method::Get);
-    let data = value_t!(matches, "method", String);
     let print_headers = matches.is_present("head");
-    let request = build_request(url, method, headers, data.ok());
+    let mut data = value_t!(matches, "data", String).ok();
+
+    // Read stdin when given --data -
+    if let Some(read_data) = data.clone() {
+        if read_data == "-" {
+            let mut buffer = String::new();
+            let stdin = stdin();
+            let mut handle = stdin.lock();
+            handle.read_to_string(&mut buffer).ok();
+            data = Some(buffer);
+        }
+    }
+
+    let request = build_request(url, method, headers, data);
 
     match fetch(request, print_headers) {
         Ok(mut response) => {
