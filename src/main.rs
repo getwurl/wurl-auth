@@ -6,7 +6,7 @@ extern crate hyper_tls;
 extern crate tokio_core;
 
 use std::process::exit;
-use std::io::{Read, stdin};
+use std::io::{stdin, Read};
 use hyper::{Client, Method, Request, Uri};
 use hyper::client::Response;
 use hyper::header::SetCookie;
