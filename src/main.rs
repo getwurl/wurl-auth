@@ -20,8 +20,9 @@ fn main() {
     let url = value_t_or_exit!(matches, "url", Uri);
     let headers = values_t!(matches, "headers", String).unwrap_or(Vec::new());
     let method = value_t!(matches, "method", Method).unwrap_or(Method::Get);
+    let data = value_t!(matches, "method", String);
     let print_headers = matches.is_present("head");
-    let request = build_request(url, method, headers);
+    let request = build_request(url, method, headers, data.ok());
 
     match fetch(request, print_headers) {
         Ok(mut response) => {
@@ -55,7 +56,7 @@ fn main() {
     }
 }
 
-fn build_request(uri: Uri, method: Method, headers: Vec<String>) -> Request {
+fn build_request(uri: Uri, method: Method, headers: Vec<String>, data: Option<String>) -> Request {
     let mut request = Request::new(method.clone(), uri.clone());
 
     for header in headers.iter() {
@@ -63,6 +64,10 @@ fn build_request(uri: Uri, method: Method, headers: Vec<String>) -> Request {
         request
             .headers_mut()
             .set_raw(split[0].to_owned(), split[1].to_owned());
+    }
+
+    if let Some(data) = data {
+        request.set_body(data);
     }
 
     request
@@ -93,8 +98,10 @@ fn fetch(request: Request, print_headers: bool) -> Result<Response, hyper::Error
         eprintln!("{}", request.headers());
     }
 
+    let connector = HttpsConnector::new(1, &core.handle())
+        .expect("Failed to construct HTTPS connector, exiting");
     let client = Client::configure()
-        .connector(HttpsConnector::new(1, &core.handle()).unwrap())
+        .connector(connector)
         .build(&core.handle());
 
     core.run(client.request(request))
