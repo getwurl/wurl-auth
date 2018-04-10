@@ -1,6 +1,6 @@
-# wurl-auth [[![Build Status](https://travis-ci.org/getwurl/wurl-auth.svg?branch=master)](https://travis-ci.org/getwurl/wurl-auth) [<img src="https://github.com/getwurl/wurl/raw/master/assets/logo.png" width="280" align="right" alt="AVA">](https://github.com/getwurl/wurl)
+# wurl-auth [![Build Status](https://travis-ci.org/getwurl/wurl-auth.svg?branch=master)](https://travis-ci.org/getwurl/wurl-auth) [<img src="https://github.com/getwurl/wurl/raw/master/assets/logo.png" width="280" align="right" alt="wurl">](https://github.com/getwurl/wurl)
 
-> Generate authentication headers automatically
+> Generate [wurl][wurl] authentication headers automatically
 
 Often WebSocket endpoints are behind authentication and require a header to
 access. The most common example of this is a login form which sets a cookie in
