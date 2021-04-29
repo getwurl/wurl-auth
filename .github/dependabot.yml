@@ -1,0 +1,16 @@
+version: 2
+updates:
+- package-ecosystem: cargo
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "07:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: futures
+    versions:
+    - "< 0.3, >= 0.2.0.a"
+  - dependency-name: hyper
+    versions:
+    - 0.14.2
+    - 0.14.4
